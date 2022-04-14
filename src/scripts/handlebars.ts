@@ -174,4 +174,8 @@ export function registerHandlebarsHelpers() {
     Handlebars.registerHelper("isNullish", function (value: unknown) {
         return value === null || value === undefined;
     });
+
+    Handlebars.registerHelper("contains", function (arr: any[], element: any) {
+        return Array.isArray(arr) && arr.includes(element);
+    });
 }

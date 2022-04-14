@@ -296,11 +296,11 @@ class CharacterPF2e extends CreaturePF2e {
                     ancestry: [],
                     background: [],
                     class: null,
-                    1: [],
-                    5: [],
-                    10: [],
-                    15: [],
-                    20: [],
+                    1: systemData.build?.abilities?.boosts?.[1] ?? [],
+                    5: systemData.build?.abilities?.boosts?.[5] ?? [],
+                    10: systemData.build?.abilities?.boosts?.[10] ?? [],
+                    15: systemData.build?.abilities?.boosts?.[15] ?? [],
+                    20: systemData.build?.abilities?.boosts?.[20] ?? [],
                 },
                 flaws: {
                     ancestry: [],
@@ -943,7 +943,7 @@ class CharacterPF2e extends CreaturePF2e {
     }
 
     private setAbilityScores(): void {
-        const { build } = this.data.data;
+        const { build, details } = this.data.data;
 
         if (!build.abilities.manual) {
             for (const section of ["ancestry", "background", "class", 1, 5, 10, 15, 20] as const) {
@@ -965,11 +965,14 @@ class CharacterPF2e extends CreaturePF2e {
                 }
 
                 // Optional and non-optional flaws only come from the ancestry section
-                for (const abbrev of build.abilities.flaws.ancestry) {
+                const flaws = section === "ancestry" ? build.abilities.flaws[section] : [];
+                for (const abbrev of flaws) {
                     const ability = this.data.data.abilities[abbrev];
                     ability.value -= 2;
                 }
             }
+
+            details.keyability.value = build.abilities.boosts.class ?? "str";
         }
 
         // Enforce a minimum of 8 and a maximum of 30 for homebrew "mythic" mechanics

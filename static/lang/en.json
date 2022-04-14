@@ -1155,6 +1155,7 @@
             "NoTokenInScene": "{actor} has no token in the scene.",
             "RevealName": "Reveal Name"
         },
+        "Edit": "Edit",
         "EditHazardLabel": "Edit Hazard?",
         "EditItemTitle": "Edit Item",
         "EditLabel": "Edit?",

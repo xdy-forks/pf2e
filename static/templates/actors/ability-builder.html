@@ -1,0 +1,227 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+    <div>
+        <div class="row header-row{{#if manual}} not-eligible{{/if}}">
+            <div class="row-heading">
+                <h3>Assign your boosts</h3>
+            </div>
+            {{#each abilityScores as |ability key|}}
+            <div class="row-column">
+                <h3>{{localize (add "PF2E.AbilityId." key)}}</h3>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="row{{#if manual}} not-eligible{{/if}}">
+            {{#if ancestry}}
+                <div class="row-heading">
+                    {{#unless (eq ancestryBoosts.remaining 0)}}<div class="remaining extra">{{ancestryBoosts.remaining}}</div>{{/unless}}
+                    <img class="" src="{{ancestry.img}}" title="{{ancestry.name}}" width="32" height="32" loading="lazy"/>
+                    <div class="label">
+                        <div class="title">{{localize "ITEM.TypeAncestry"}}</div>
+                        <div class="description" data-tooltip-content="#ancestry-tooltip">{{ancestry.name}}</div>
+                    </div>
+                </div>
+                {{#each ancestryBoosts.boosts as |boost ability|}}
+                <div class="row-column">
+                    <button type="button"
+                        data-action="ancestry-boost"
+                        data-ability="{{ability}}"
+                        class="
+                            {{#if (eq boost "unavailable")}}hidden{{/if}}
+                            {{#if (eq boost "boosted")}}boost selected{{/if}}
+                            {{#if (eq boost "locked")}}boost locked{{/if}}
+                            {{#if (eq boost "flawed")}}flaw{{/if}}
+                            {{#if (eq boost "flawed-locked")}}flaw selected{{/if}}
+                            {{#if (eq boost "neutral")}}boost selected{{/if}}
+                        ">
+                        {{#if (eq boost "locked")}}<i class="fas fa-lock"></i>{{/if}}
+                        {{#if (eq boost "flawed-locked")}}
+                            -2
+                        {{else if (eq boost "flawed")}}
+                            <div class="flaw-indicator">-2</div>
+                            +2
+                        {{else if (eq boost "neutral")}}
+                            <div class="flaw-indicator">-2</div>
+                            +2
+                        {{else}}
+                            +2
+                        {{/if}}
+                    </button>
+                </div>
+                {{/each}}
+            {{else}}
+                <div class="row-heading">
+                    <div class="label">
+                        <div class="title">{{localize "ITEM.TypeAncestry"}}</div>
+                        <div class="description">Not Selected</div>
+                    </div>
+                </div>
+                <div class="full-row">
+                    Choose an ancestry to select boosts
+                </div>
+            {{/if}}
+
+            <div class="hover-content" id="ancestry-tooltip">
+                <h2>Boosts</h2>
+                <ul>
+                    <li>Dexterixy</li>
+                    <li>Intelligence</li>
+                    <li>Free</li>
+                </ul>
+                <h2>Flaws</h2>
+                <ul>
+                    <li>Charisma</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row{{#if manual}} not-eligible{{/if}}">
+            {{#if background}}
+                <div class="row-heading">
+                    {{#unless (eq backgroundBoosts.remaining 0)}}<div class="remaining extra">{{backgroundBoosts.remaining}}</div>{{/unless}}
+                    <img class="" src="{{background.img}}" title="{{background.name}}" width="32" height="32" loading="lazy"/>
+                    <div class="label">
+                        <div class="title">{{localize "PF2E.Background"}}</div>
+                        <div class="description">{{background.name}}</div>
+                    </div>
+                </div>
+                {{#each backgroundBoosts.boosts as |boost ability|}}
+                <div class="row-column">
+                    <button type="button"
+                        data-action="background-boost"
+                        data-ability="{{ability}}"
+                        class="
+                            {{#if (eq boost "unavailable")}}hidden{{/if}}
+                            {{#if (eq boost "boosted")}}boost selected{{/if}}
+                            {{#if (eq boost "locked")}}boost locked{{/if}}
+                            {{#if (eq boost "flawed")}}flaw{{/if}}
+                            {{#if (eq boost "flawed-locked")}}flaw selected{{/if}}
+                            {{#if (eq boost "neutral")}}boost selected{{/if}}
+                        ">
+                        +2
+                    </button>
+                </div>
+                {{/each}}
+            {{else}}
+                <div class="row-heading">
+                    <div class="label">
+                        <div class="title">{{localize "ITEM.TypeBackground"}}</div>
+                        <div class="description">Not Selected</div>
+                    </div>
+                </div>
+                <div class="full-row">
+                    Choose a background to select boosts
+                </div>
+            {{/if}}
+        </div>
+
+        <hr />
+
+        <div class="row{{#if manual}} not-eligible{{/if}}">
+            {{#if class}}
+                <div class="row-heading">
+                    {{!-- <div class="remaining">0</div> --}}
+                    <img class="" src="{{class.img}}" title="{{ancestry.name}}" width="32" height="32" loading="lazy"/>
+                    <div>
+                        <div class="title">{{localize "PF2E.Class"}}</div>
+                        <div class="description">{{class.name}}</div>
+                    </div>
+                </div>
+                {{#each abilities as |key ability|}}
+                <div class="row-column">
+                    <button type="button"
+                        data-action="class-keyAbility"
+                        data-key="{{key}}"
+                        data-ability="{{ability}}"
+                        class="boost{{#if (not (contains ../keyOptions ability))}} hidden{{/if}}{{#if (eq ../class.data.data.keyAbility.selected ability)}} selected{{/if}}">
+                        <i class="fas fa-key"></i>
+                        +2
+                    </button>
+                </div>
+                {{/each}}
+            {{else}}
+                <div class="row-heading">
+                    <div class="label">
+                        <div class="title">{{localize "ITEM.TypeClass"}}</div>
+                        <div class="description">Not Selected</div>
+                    </div>
+                </div>
+                <div class="full-row">
+                    Choose a class to select boosts
+                </div>
+            {{/if}}
+        </div>
+
+        <hr />
+
+        <div class="row{{#if manual}} not-eligible{{/if}}">
+            <div class="row-heading">
+                <div class="label">
+                    <div class="title">Free</div>
+                </div>
+            </div>
+        </div>
+
+        {{#each levelBoosts as |boosts level|}}
+        <div class="row{{#if ../manual}} not-eligible{{/if}}{{#if (not boosts.eligible)}} not-eligible{{/if}}">
+            <div class="row-heading">
+                {{#unless (eq remaining 0)}}<div class="remaining extra">{{remaining}}</div>{{/unless}}
+                <div class="label">
+                    <div class="description">Level {{level}}</div>
+                </div>
+            </div>
+            {{#each ../abilities as |key ability|}}
+            <div class="row-column">
+                <button type="button"
+                    data-action="level"
+                    data-level="{{level}}"
+                    data-ability="{{ability}}"
+                    class="boost {{#if (contains boosts.boosts ability)}} selected{{else}}{{#if boosts.full}} hidden{{/if}}{{/if}}">
+                    +2
+                </button>
+            </div>
+            {{/each}}
+        </div>
+        {{/each}}
+
+        <hr />
+
+        <div class="row summary-row">
+            <div class="row-heading">
+                <div class="hint-container">
+                    <h3>Ability Score Method</h3>
+                    <p>Switching method resets your ability score distribution</p>
+                    <label>
+                        <input type="checkbox" name="data.build.manual" {{#if manual}}checked{{/if}}>
+                        Use Custom
+                    </label>
+                </div>
+            </div>
+            {{#each abilityScores as |ability key|}}
+            <div class="row-column">
+                {{#if ../manual}}
+                    <input type="number" data-property="data.abilities.{{key}}.value" name="data.abilities.{{key}}.value" value="{{ability.value}}" placeholder="10">
+                {{else}}
+                    <div class="value">{{ability.value}}</div>
+                {{/if}}
+                <h4>{{localize (lookup ../abilities key)}}</h4>
+            </div>
+            {{/each}}
+            <div class="complete">
+                <button type="submit">Complete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row background-stripes">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</form>

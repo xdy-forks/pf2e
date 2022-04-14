@@ -24,6 +24,7 @@ import { restForTheNight } from "@scripts/macros/rest-for-the-night";
 import { PCSheetTabManager } from "./tab-manager";
 import { ActorSheetDataPF2e } from "@actor/sheet/data-types";
 import { SkillAbbreviation } from "@actor/creature/data";
+import { AbilityBuilderPopup } from "../sheet/popups/ability-builder";
 
 export class CharacterSheetPF2e extends CreatureSheetPF2e<CharacterPF2e> {
     // A cache of this PC's known formulas, for use by sheet callbacks
@@ -689,6 +690,11 @@ export class CharacterSheetPF2e extends CreatureSheetPF2e<CharacterPF2e> {
                     await actor.increaseCondition(effect);
                 }
             }
+        });
+
+        $html.find("button[data-action=edit-ability-scores]").on("click", async (event) => {
+            event.preventDefault();
+            await new AbilityBuilderPopup(this.actor, {}).render(true);
         });
 
         const $craftingTab = $html.find(".tab.crafting");
