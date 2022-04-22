@@ -20,7 +20,7 @@ interface ClassData extends Omit<ClassSource, "effects" | "flags"> {
 
 interface ClassSystemData extends ABCSystemData {
     traits: ItemTraits;
-    keyAbility: { value: AbilityString[] };
+    keyAbility: { value: AbilityString[]; selected: AbilityString | null };
     hp: number;
     perception: ZeroToFour;
     savingThrows: {

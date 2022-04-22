@@ -40,6 +40,22 @@ export class AncestryPF2e extends ABCItemPF2e {
         );
     }
 
+    override prepareBaseData(): void {
+        super.prepareBaseData();
+
+        for (const boost of Object.values(this.data.data.boosts)) {
+            if (boost.value.length === 1) {
+                boost.selected = boost.value[0];
+            }
+        }
+
+        for (const flaw of Object.values(this.data.data.flaws)) {
+            if (flaw.value.length === 1) {
+                flaw.selected = flaw.value[0];
+            }
+        }
+    }
+
     /** Prepare a character's data derived from their ancestry */
     override prepareActorData(this: Embedded<AncestryPF2e>): void {
         if (!(this.actor instanceof CharacterPF2e)) {
@@ -61,6 +77,17 @@ export class AncestryPF2e extends ABCItemPF2e {
         systemData.attributes.reach = { general: reach, manipulate: reach };
 
         systemData.attributes.speed.value = String(this.speed);
+
+        // Add ability boosts and flaws
+        const { build } = this.actor.data.data;
+
+        for (const list of ["boosts", "flaws"] as const) {
+            for (const ability of Object.values(this.data.data[list])) {
+                if (ability.selected) {
+                    build.abilities[list].ancestry.push(ability.selected);
+                }
+            }
+        }
 
         // Add languages
         const innateLanguages = this.data.data.languages.value;

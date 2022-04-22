@@ -19,7 +19,7 @@ export interface BackgroundData extends Omit<BackgroundSource, "effects" | "flag
 
 interface BackgroundSystemData extends ABCSystemData {
     traits: ItemTraits;
-    boosts: { [key: string]: { value: AbilityString[] } };
+    boosts: Record<string, { value: AbilityString[]; selected: AbilityString | null }>;
     trainedLore: string;
     trainedSkills: {
         value: SkillAbbreviation[];
