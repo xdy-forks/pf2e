@@ -1,3 +1,4 @@
+
 # A system implementation of Pathfinder Second Edition for Foundry VTT
 
 This system uses trademarks and/or copyrights owned by Paizo Inc., which are used with permission granted as part of the partnership agreement between Foundry Gaming LLC and Paizo Inc. This system was created and is maintained by the PF2E For Foundry VTT volunteer development team, and is published for free with the endorsement of Foundry Gaming LLC.
